@@ -43,7 +43,7 @@ public class CharacterApiController {
     }
 
     //create new character endpoint
-    @PostMapping("/character")
+    @PostMapping
     public ResponseEntity<Character> createCharacter(@RequestBody Character character) {
         Character createdCharacter = characterService.createCharacter(character);
         return ResponseEntity.ok(createdCharacter);

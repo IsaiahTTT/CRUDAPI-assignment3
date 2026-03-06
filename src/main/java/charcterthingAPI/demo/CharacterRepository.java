@@ -10,9 +10,9 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
     
     List<Character> findByName(String name);
 
-    @Query(value = "SELECT c.* from characters c WHERE c.role = 'Apprentice'", nativeQuery = true)
+    @Query(value = "SELECT c.* from character c WHERE c.role = 'Apprentice'", nativeQuery = true)
     List<Character> findApprenticeRole(String role);
 
-    @Query(value = "SELECT c.* from characters c WHERE c.role = 'Master'", nativeQuery = true)
+    @Query(value = "SELECT c.* from character c WHERE c.role = 'Master'", nativeQuery = true)
     List<Character> findMasterRole(String role);
 }

@@ -26,7 +26,7 @@ public class CharacterApiController {
     }
 
     // Get all characters endpoint
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Collection<Character>> getAllCharacters(){
         return ResponseEntity.ok(characterService.getAllCharacters());
     }
@@ -43,7 +43,7 @@ public class CharacterApiController {
     }
 
     //create new character endpoint
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Character> createCharacter(@RequestBody Character character) {
         Character createdCharacter = characterService.createCharacter(character);
         return ResponseEntity.ok(createdCharacter);

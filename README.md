@@ -321,27 +321,27 @@ This project follows a three-tier architecture pattern:
 
 ## API Endpoints
 
-All endpoints use the base URL: `http://localhost:8080/api/students`
+All endpoints use the base URL: `http://localhost:8080/character`
 
-### 1. Get All Students
+### 1. Get All Characters
 
 ```http
-GET /api/students/
+GET /character
 ```
 
-**Description**: Retrieve a list of all students in the database.
+**Description**: Retrieve a list of all characters in the database.
 
 **Parameters**: None
 
 **Response**:
 
 - **Status Code**: `200 OK`
-- **Body**: Array of Student objects
+- **Body**: Array of Character objects
 
 #### Example Request
 
 ```bash
-curl http://localhost:8080/api/students/
+curl http://localhost:8080/character
 ```
 
 #### Example Response (Status: 200 OK)
@@ -349,56 +349,56 @@ curl http://localhost:8080/api/students/
 ```json
 [
   {
-    "studentId": 1,
-    "name": "Alice Johnson",
-    "email": "alice@university.edu",
-    "major": "Computer Science",
-    "gpa": 3.8
+    "characterId": 1,
+    "name": "Darth Bane",
+    "description": "Ancient Sith",
+    "role": "Master",
+    "age": 42
   },
   {
-    "studentId": 2,
-    "name": "Bob Smith",
-    "email": "bob@university.edu",
-    "major": "Mathematics",
-    "gpa": 3.5
+    "characterId": 2,
+    "name": "Darth Zannah",
+    "description": "Sith Apprentice",
+    "role": "Apprentice",
+    "age": 22
   }
 ]
 ```
 
 ---
 
-### 2. Get Student by ID
+### 2. Get Character by ID
 
 ```http
-GET /api/students/{id}
+GET /character/{id}
 ```
 
-**Description**: Retrieve a single student by their ID.
+**Description**: Retrieve a single character by their ID.
 
 **Path Parameters**:
 
-- `id` (Long, required): The unique identifier of the student
+- `id` (Long, required): The unique identifier of the character
 
 **Response**:
 
 - **Status Code**: `200 OK` (if found) or `404 Not Found` (if not found)
-- **Body**: Student object
+- **Body**: Character object
 
 #### Example Request
 
 ```bash
-curl http://localhost:8080/api/students/1
+curl http://localhost:8080/character/1
 ```
 
 #### Example Response (Status: 200 OK)
 
 ```json
 {
-  "studentId": 1,
-  "name": "Alice Johnson",
-  "email": "alice@university.edu",
-  "major": "Computer Science",
-  "gpa": 3.8
+  "characterId": 1,
+  "name": "Darth Bane",
+  "description": "Ancient Sith",
+  "role": "Master",
+  "age": 42
 }
 ```
 
@@ -410,36 +410,36 @@ curl http://localhost:8080/api/students/1
 
 ---
 
-### 3. Create a New Student
+### 3. Create a New Character
 
 ```http
-POST /api/students/
+POST /character
 ```
 
-**Description**: Create a new student record in the database.
+**Description**: Create a new character record in the database.
 
-**Request Body**: Student object with the following fields:
+**Request Body**: Character object with the following fields:
 
-- `name` (String, required): Student's full name
-- `email` (String, required, unique): Student's email address
-- `major` (String, optional): Student's major
-- `gpa` (Double, optional): Student's GPA
+- `name` (String, required): Character's name
+- `description` (String, optional): Character description
+- `role` (String, optional): Character role
+- `age` (Integer, optional): Character age
 
 **Response**:
 
 - **Status Code**: `200 OK` (if created successfully)
-- **Body**: Created Student object with assigned `studentId`
+- **Body**: Created Character object with assigned `characterId`
 
 #### Example Request
 
 ```bash
-curl -X POST http://localhost:8080/api/students/ \
+curl -X POST http://localhost:8080/character \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Charlie Brown",
-    "email": "charlie@university.edu",
-    "major": "Physics",
-    "gpa": 3.7
+    "name": "Darth Revan",
+    "description": "Ancient Sith",
+    "role": "Master",
+    "age": 62
   }'
 ```
 
@@ -447,102 +447,38 @@ curl -X POST http://localhost:8080/api/students/ \
 
 ```json
 {
-  "studentId": 3,
-  "name": "Charlie Brown",
-  "email": "charlie@university.edu",
-  "major": "Physics",
-  "gpa": 3.7
+  "characterId": 5,
+  "name": "Darth Revan",
+  "description": "Ancient Sith",
+  "role": "Master",
+  "age": 62
 }
 ```
 
 ---
 
-### 4. Get Students by Major
+### 4. Get Characters by Age Range
 
 ```http
-GET /api/students/major/{major}
+GET /character/age?minAge={minAge}&maxAge={maxAge}
 ```
 
-**Description**: Retrieve all students with a specific major.
-
-**Path Parameters**:
-
-- `major` (String, required): The major to filter by (e.g., "Computer Science")
-
-**Response**:
-
-- **Status Code**: `200 OK`
-- **Body**: Array of Student objects
-
----
-
-### 5. Get Honors Students
-
-```http
-GET /api/students/honors/{gpa}
-```
-
-**Description**: Retrieve students with a GPA greater than or equal to the specified value.
-
-**Path Parameters**:
-
-- `gpa` (Double, required): Minimum GPA for honors (e.g., 3.5)
-
-**Response**:
-
-- **Status Code**: `200 OK`
-- **Body**: Array of Student objects meeting the GPA requirement
-
-#### Example Request
-
-```bash
-curl http://localhost:8080/api/students/honors/3.7
-```
-
-#### Example Response (Status: 200 OK)
-
-```json
-[
-  {
-    "studentId": 1,
-    "name": "Alice Johnson",
-    "email": "alice@university.edu",
-    "major": "Computer Science",
-    "gpa": 3.8
-  },
-  {
-    "studentId": 3,
-    "name": "Charlie Brown",
-    "email": "charlie@university.edu",
-    "major": "Physics",
-    "gpa": 3.7
-  }
-]
-```
-
----
-
-### 6. Search Students by Name
-
-```http
-GET /api/students/search?name={name}
-```
-
-**Description**: Search for students by name (partial match supported) or retrieve all students if no name is provided.
+**Description**: Retrieve characters whose ages fall within a specific range.
 
 **Query Parameters**:
 
-- `name` (String, optional): The name or part of the name to search for
+- `minAge` (Integer, required): Minimum age
+- `maxAge` (Integer, required): Maximum age
 
 **Response**:
 
 - **Status Code**: `200 OK`
-- **Body**: Array of matched Student objects
+- **Body**: Array of Character objects
 
 #### Example Request
 
 ```bash
-curl "http://localhost:8080/api/students/search?name=Alice"
+curl "http://localhost:8080/character/age?minAge=20&maxAge=50"
 ```
 
 #### Example Response (Status: 200 OK)
@@ -550,70 +486,129 @@ curl "http://localhost:8080/api/students/search?name=Alice"
 ```json
 [
   {
-    "studentId": 1,
-    "name": "Alice Johnson",
-    "email": "alice@university.edu",
-    "major": "Computer Science",
-    "gpa": 3.8
+    "characterId": 1,
+    "name": "Darth Bane",
+    "description": "Ancient Sith",
+    "role": "Master",
+    "age": 42
   }
 ]
 ```
 
 ---
 
-### 7. Get Student by Email
+### 5. Get Characters by Name
 
 ```http
-GET /api/students/email/{email}
+GET /character/name?name={name}
 ```
 
-**Description**: Retrieve a student by their email address.
+**Description**: Retrieve characters with a specific name.
 
-**Path Parameters**:
+**Query Parameters**:
 
-- `email` (String, required): The student's email address
+- `name` (String, required): The character name to search for
 
 **Response**:
 
-- **Status Code**: `200 OK` (if found) or `404 Not Found` (if not found)
-- **Body**: Student object
-
----
-
-### 8. Update a Student
-
-```http
-PUT /api/students/{id}
-```
-
-**Description**: Update an existing student's information.
-
-**Path Parameters**:
-
-- `id` (Long, required): The ID of the student to update
-
-**Request Body**: Student object with fields to update:
-
-- `name` (String): Updated name
-- `email` (String): Updated email
-- `major` (String): Updated major
-- `gpa` (Double): Updated GPA
-
-**Response**:
-
-- **Status Code**: `200 OK` (if updated successfully) or `404 Not Found` (if student not found)
-- **Body**: Updated Student object
+- **Status Code**: `200 OK`
+- **Body**: Array of matching Character objects
 
 #### Example Request
 
 ```bash
-curl -X PUT http://localhost:8080/api/students/1 \
+curl "http://localhost:8080/character/name?name=Darth%20Bane"
+```
+
+#### Example Response (Status: 200 OK)
+
+```json
+[
+  {
+    "characterId": 1,
+    "name": "Darth Bane",
+    "description": "Ancient Sith",
+    "role": "Master",
+    "age": 42
+  }
+]
+```
+
+---
+
+### 6. Get Characters by Role
+
+```http
+GET /character/role?role={role}
+```
+
+**Description**: Retrieve all characters with a specific role.
+
+**Query Parameters**:
+
+- `role` (String, required): The role to filter by (e.g., "Master")
+
+**Response**:
+
+- **Status Code**: `200 OK`
+- **Body**: Array of Character objects
+
+#### Example Request
+
+```bash
+curl "http://localhost:8080/character/role?role=Master"
+```
+
+#### Example Response (Status: 200 OK)
+
+```json
+[
+  {
+    "characterId": 1,
+    "name": "Darth Bane",
+    "description": "Ancient Sith",
+    "role": "Master",
+    "age": 42
+  }
+]
+```
+
+---
+
+### 7. Update a Character
+
+```http
+PUT /character/{id}
+```
+
+**Description**: Update an existing character's information.
+
+**Path Parameters**:
+
+- `id` (Long, required): The ID of the character to update
+
+**Request Body**: Character object with fields to update:
+
+- `name` (String): Updated name
+- `description` (String): Updated description
+- `role` (String): Updated role
+- `age` (Integer): Updated age
+
+**Response**:
+
+- **Status Code**: `200 OK` (if updated successfully) or `404 Not Found` (if character not found)
+- **Body**: Updated Character object
+
+#### Example Request
+
+```bash
+curl -X PUT http://localhost:8080/character/1 \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Alice Johnson",
-    "email": "alice.johnson@university.edu",
-    "major": "Computer Science",
-    "gpa": 3.9
+    "name": "Darth Bane",
+    "description": "Legendary Sith Lord",
+    "role": "Master",
+    "age": 45
   }'
 ```
 
@@ -621,27 +616,27 @@ curl -X PUT http://localhost:8080/api/students/1 \
 
 ```json
 {
-  "studentId": 1,
-  "name": "Alice Johnson",
-  "email": "alice.johnson@university.edu",
-  "major": "Computer Science",
-  "gpa": 3.9
+  "characterId": 1,
+  "name": "Darth Bane",
+  "description": "Legendary Sith Lord",
+  "role": "Master",
+  "age": 45
 }
 ```
 
 ---
 
-### 9. Delete a Student
+### 8. Delete a Character
 
 ```http
-DELETE /api/students/{id}
+DELETE /character/{id}
 ```
 
-**Description**: Delete an existing student record from the database.
+**Description**: Delete an existing character record from the database.
 
 **Path Parameters**:
 
-- `id` (Long, required): The ID of the student to delete
+- `id` (Long, required): The ID of the character to delete
 
 **Response**:
 
@@ -651,7 +646,7 @@ DELETE /api/students/{id}
 #### Example Request
 
 ```bash
-curl -X DELETE http://localhost:8080/api/students/1
+curl -X DELETE http://localhost:8080/character/1
 ```
 
 #### Example Response (Status: 204 No Content)
@@ -659,8 +654,6 @@ curl -X DELETE http://localhost:8080/api/students/1
 ```
 (Empty body)
 ```
-
----
 
 ## Key Spring Boot Concepts
 

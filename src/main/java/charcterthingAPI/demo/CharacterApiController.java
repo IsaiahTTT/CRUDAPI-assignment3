@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 
 @RestController
-@RequestMapping("/characters")
+@RequestMapping("/character")
 public class CharacterApiController {
     
     private final CharacterService characterService;
@@ -43,7 +43,7 @@ public class CharacterApiController {
     }
 
     //create new character endpoint
-    @PostMapping
+    @PostMapping("/character")
     public ResponseEntity<Character> createCharacter(@RequestBody Character character) {
         Character createdCharacter = characterService.createCharacter(character);
         return ResponseEntity.ok(createdCharacter);
@@ -91,7 +91,7 @@ public class CharacterApiController {
     }
 
     //delete character by id endpoint
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCharacter(@PathVariable Long id) {
         characterService.deleteCharacter(id);
         return ResponseEntity.noContent().build();
